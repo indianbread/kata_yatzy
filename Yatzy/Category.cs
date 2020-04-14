@@ -105,7 +105,24 @@ namespace Yatzy
 
         public int FullHouse()
         {
-            return 0;
+            int totalScore = 0;
+            int threeOfAKindPoints = ThreeOfAKind();
+            if (threeOfAKindPoints == 0)
+            {
+                return totalScore;
+            }
+
+            int threeOfAKindNumber = GetNumbersWithMultipleOccurence(3).First();
+            _diceNumbers.RemoveAll(number => number == threeOfAKindNumber);
+            int pairPoints = Pair();
+            if (pairPoints == 0)
+            {
+                return totalScore;
+            }
+
+            totalScore = threeOfAKindPoints + pairPoints;
+            return totalScore;
+
         }
 
         private int Numbers(int categoryNumber)

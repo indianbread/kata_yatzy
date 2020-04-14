@@ -232,16 +232,28 @@ namespace Yatzy.Test
             Assert.Equal(expectedTotal, category.LargeStraight());
         }
         
-        // [Theory]
-        // [InlineData(8, 1, 1, 2, 2, 2)]
-        // public void ReturnSumOfAllDiceForFullHouse(int expectedTotal, int dice1, int dice2, int dice3, int dice4,
-        //     int dice5)
-        // {
-        //     List<int> diceNumbers = new List<int>() {dice1, dice2, dice3, dice4, dice5};
-        //     Category category = new Category(diceNumbers);
-        //     
-        //     Assert.Equal(expectedTotal, category.FullHouse());
-        // }
+        [Theory]
+        [InlineData(8, 1, 1, 2, 2, 2)]
+        public void ReturnSumOfAllDiceForFullHouse(int expectedTotal, int dice1, int dice2, int dice3, int dice4,
+            int dice5)
+        {
+            List<int> diceNumbers = new List<int>() {dice1, dice2, dice3, dice4, dice5};
+            Category category = new Category(diceNumbers);
+            
+            Assert.Equal(expectedTotal, category.FullHouse());
+        }
+        
+        [Theory]
+        [InlineData(0, 2, 2, 3, 3, 4)]
+        [InlineData(0, 4, 4, 4, 4, 4)]
+        public void Return0IfNotEligibleForFullHouse(int expectedTotal, int dice1, int dice2, int dice3, int dice4,
+            int dice5)
+        {
+            List<int> diceNumbers = new List<int>() {dice1, dice2, dice3, dice4, dice5};
+            Category category = new Category(diceNumbers);
+            
+            Assert.Equal(expectedTotal, category.FullHouse());
+        }
 
     }
 }
