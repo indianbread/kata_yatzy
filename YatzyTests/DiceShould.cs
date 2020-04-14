@@ -2,7 +2,7 @@ using System;
 using Xunit;
 using Yatzy;
 
-namespace YatzyTests
+namespace Yatzy.Test
 {
     public class DiceShould
     {

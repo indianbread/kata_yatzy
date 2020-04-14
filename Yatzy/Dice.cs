@@ -15,10 +15,10 @@ namespace Yatzy
             Random random = new Random();
             _value = random.Next(MinDiceValue, MaxDiceValue);
         }
-        
-        
-        
-        private int _value { get; }
+
+
+
+        private int _value;
         public int GetValue()
         {
             return _value;
