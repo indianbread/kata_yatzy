@@ -9,9 +9,14 @@ namespace Yatzy
     {
         private List<int> _diceNumbers;
 
-        public Category(List<int> diceNumbers)
+        public Category(List<int> diceNumbers) 
         {
             _diceNumbers = diceNumbers;
+        }
+        //can also take list of dice as param
+        public Category(List<Dice> dice)
+        {
+            _diceNumbers = dice.Select(die => die.GetValue()).ToList();
         }
         public int Chance()
         {
@@ -33,36 +38,45 @@ namespace Yatzy
             int total = isYatzy ? 50 : 0;
             return total;
         }
-
-        public int Ones()
+        
+        public int GetNumbersPoints(int categoryNumber)
         {
-            return Numbers(1);
+            var countOfDice = _diceNumbers.FindAll(diceNumber => diceNumber == categoryNumber).Count;
+            var result = countOfDice * categoryNumber;
+            return result;
+        }
+        
+  /*      public int Ones()
+        {
+            return GetNumbersPoints(1);
         }
 
         public int Twos()
         {
-            return Numbers(2);
+            return GetNumbersPoints(2);
         }
 
         public int Threes()
         {
-            return Numbers(3);
+            return GetNumbersPoints(3);
         }
 
         public int Fours()
         {
-            return Numbers(4);
+            return GetNumbersPoints(4);
         }
 
         public int Fives()
         {
-            return Numbers(5);
+            return GetNumbersPoints(5);
         }
 
         public int Sixes()
         {
-            return Numbers(6);
+            return GetNumbersPoints(6);
         }
+        */
+        
         
         public int Pair()
         {
@@ -125,11 +139,7 @@ namespace Yatzy
 
         }
 
-        private int Numbers(int categoryNumber)
-        {
-            var countOfDice = _diceNumbers.FindAll(diceNumber => diceNumber == categoryNumber).Count;
-            return countOfDice * categoryNumber;
-        }
+
         
         private int GetPairPoints(int numberOfPairs)
         {
@@ -174,7 +184,12 @@ namespace Yatzy
         
         private int GetStraightTotalScore(int startingNumber)
         {
-            int totalScore = startingNumber;
+            int totalScore = 0;
+            if (startingNumber != _diceNumbers.Min())
+            {
+                return totalScore;
+            }
+            totalScore = startingNumber;
             for (int i = 1; i < _diceNumbers.Count; i++)
             {
                 if (_diceNumbers[i] == (_diceNumbers[i - 1] + 1))

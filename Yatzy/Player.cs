@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Yatzy
 {
@@ -7,7 +8,7 @@ namespace Yatzy
         private List<Dice> _rolledDices = new List<Dice>();
         public List<Dice> RollDice()
         {
-            for (int i = 0; i < NumOfDicePerHand; i++)
+            for (int i = 0; i < _numOfDicePerHand; i++)
             {
                 _rolledDices.Add(new Dice());
             }
@@ -15,6 +16,10 @@ namespace Yatzy
             return _rolledDices;
         }
 
-        private const int NumOfDicePerHand = 5;
+        private List<int> myNumbers => _rolledDices.Select(dice => dice.GetValue()).ToList();
+
+        //make a function to generate a sorted list of scores and categories
+
+        private const int _numOfDicePerHand = 5;
     }
 }

@@ -45,7 +45,8 @@ namespace Yatzy.Test
             List<int> diceNumbers = new List<int>() {dice1, dice2, dice3, dice4, dice5};
             Category category = new Category(diceNumbers);
             
-            Assert.Equal(expectedTotal, category.Ones());
+            Assert.Equal(expectedTotal, category.GetNumbersPoints(1
+            ));
         }
         
         [Theory]
@@ -56,7 +57,8 @@ namespace Yatzy.Test
             List<int> diceNumbers = new List<int>() {dice1, dice2, dice3, dice4, dice5};
             Category category = new Category(diceNumbers);
             
-            Assert.Equal(expectedTotal, category.Ones());
+            Assert.Equal(expectedTotal, category.GetNumbersPoints(1
+            ));
         }
         
         [Theory]
@@ -67,7 +69,7 @@ namespace Yatzy.Test
             List<int> diceNumbers = new List<int>() {dice1, dice2, dice3, dice4, dice5};
             Category category = new Category(diceNumbers);
             
-            Assert.Equal(expectedTotal, category.Twos());
+            Assert.Equal(expectedTotal, category.GetNumbersPoints(2));
         }
         
         [Theory]
@@ -78,7 +80,7 @@ namespace Yatzy.Test
             List<int> diceNumbers = new List<int>() {dice1, dice2, dice3, dice4, dice5};
             Category category = new Category(diceNumbers);
             
-            Assert.Equal(expectedTotal, category.Fours());
+            Assert.Equal(expectedTotal, category.GetNumbersPoints(4));
         }
         
         [Theory]
@@ -89,7 +91,7 @@ namespace Yatzy.Test
             List<int> diceNumbers = new List<int>() {dice1, dice2, dice3, dice4, dice5};
             Category category = new Category(diceNumbers);
             
-            Assert.Equal(expectedTotal, category.Sixes());
+            Assert.Equal(expectedTotal, category.GetNumbersPoints(6));
         }
 
         [Theory]
@@ -201,6 +203,7 @@ namespace Yatzy.Test
         
         [Theory]
         [InlineData(0, 1, 1, 3, 4, 5)]
+        [InlineData(0, 2, 3, 4, 5, 6)]
         public void Return0IfDiceDoesNotQualifyForSmallStraight(int expectedTotal, int dice1, int dice2, int dice3, int dice4,
             int dice5)
         {
@@ -223,6 +226,7 @@ namespace Yatzy.Test
         
         [Theory]
         [InlineData(0, 2, 3, 3, 4, 5)]
+        [InlineData(0, 1, 2, 3, 4, 5)]
         public void Return0IfDiceDoesNotQualifyForLargeStraight(int expectedTotal, int dice1, int dice2, int dice3, int dice4,
             int dice5)
         {
