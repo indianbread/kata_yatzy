@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace Yatzy
 {
@@ -19,6 +21,7 @@ namespace Yatzy
         private List<int> myNumbers => _rolledDices.Select(dice => dice.GetValue()).ToList();
 
         //make a function to generate a sorted list of scores and categories
+
 
         private const int _numOfDicePerHand = 5;
     }

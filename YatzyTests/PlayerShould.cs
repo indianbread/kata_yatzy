@@ -6,11 +6,17 @@ namespace Yatzy.Test
 {
     public class PlayerShould
     {
+        public PlayerShould()
+        {
+            Player = new Player();
+        }
+
+        public Player Player;
+        
         [Fact]
         public void ReturnAListOfRolledValues()
         {
-            var testPlayer = new Player();
-            var actual = testPlayer.RollDice();
+            var actual = Player.RollDice();
 
             Assert.Equal(5, actual.Count);
             
@@ -19,8 +25,7 @@ namespace Yatzy.Test
         [Fact]
         public void ReturnedDiceValuesBetween1And6()
         {
-            var testPlayer = new Player();
-            var actual = testPlayer.RollDice();
+            var actual = Player.RollDice();
             foreach (var dice in actual)
             {
                Assert.True(dice.GetValue() >= 1 && dice.GetValue() <= 6); 
