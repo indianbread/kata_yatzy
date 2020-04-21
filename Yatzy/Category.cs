@@ -1,27 +1,31 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
+using System.Reflection.Metadata;
 
 namespace Yatzy
 {
     public class Category
     {
-        private List<int> _diceNumbers;
+        private int[] _diceNumbers;
 
         private SortedList<int, int> _diceNumbersWithCount = new SortedList<int, int>();
 
-        public Category(List<int> diceNumbers) 
+        public Category(int[] diceNumbers) 
         {
             _diceNumbers = diceNumbers;
             _diceNumbersWithCount = GetDiceNumbersWithCount();
         }
         
         //can also take list of dice as param
-        public Category(List<Dice> dice)
-        {
-            _diceNumbers = dice.Select(die => die.GetValue()).ToList();
-        }
+        // public Category(List<Dice> dice)
+        // {
+        //     _diceNumbers = dice.Select(die => die.GetValue()).ToList();
+        // }
+        
         public int Chance()
         {
             int sum = _diceNumbers.Aggregate((result, number) => result + number);
@@ -32,7 +36,7 @@ namespace Yatzy
         {
             bool isYatzy = true;
         
-            for (int i = 0; i < (_diceNumbers.Count - 1); i++)
+            for (int i = 0; i < (_diceNumbers.Length - 1); i++)
             {
                 if (_diceNumbers[i] == _diceNumbers[i + 1]) continue;
                 isYatzy = false;
@@ -43,11 +47,41 @@ namespace Yatzy
             return total;
         }
         
-        public int GetNumbersPoints(int categoryNumber)
+        private int GetNumbersPoints(int categoryNumber)
         {
             bool isNumberPresent = _diceNumbers.Any(number => number == categoryNumber);
 
             return isNumberPresent ? _diceNumbersWithCount[categoryNumber] * categoryNumber : 0;
+        }
+
+        public int Ones()
+        {
+            return GetNumbersPoints(1);
+        }
+
+        public int Twos()
+        {
+            return GetNumbersPoints(2);
+        }
+
+        public int Threes()
+        {
+            return GetNumbersPoints(3);
+        }
+
+        public int Fours()
+        {
+            return GetNumbersPoints(4);
+        }
+
+        public int Fives()
+        {
+            return GetNumbersPoints(5);
+        }
+
+        public int Sixes()
+        {
+            return GetNumbersPoints(6);
         }
      
         public int Pair()
@@ -147,7 +181,7 @@ namespace Yatzy
                 return totalScore;
             }
             totalScore = startingNumber;
-            for (int i = 1; i < _diceNumbers.Count; i++)
+            for (int i = 1; i < _diceNumbers.Length; i++)
             {
                 if (_diceNumbers[i] == (_diceNumbers[i - 1] + 1))
                 {

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 using Yatzy;
 
@@ -33,6 +34,24 @@ namespace Yatzy.Test
             
         }
         
+         // [Fact]
+         // public void StoreAListOfScoresForEachCategory()
+         // {
+         //     Player.RollDice();
+         //     Assert.Equal(15, Player.GetScoresForEachCategory().Count);
+         // }
+         //
+         // [Fact]
+         // public void CategoryScoreListContainsCorrectData()
+         // {
+         //     Player.RollDice();
+         //     var sut = Player.GetScoresForEachCategory();
+         //     var actualCountOfScoresGreaterThanZero = sut.Count(item => item.Value > 2);
+         //     
+         //     Assert.True(actualCountOfScoresGreaterThanZero > 0);
+         //
+         // }
+
         
     }
 }
