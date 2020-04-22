@@ -9,7 +9,6 @@ namespace Yatzy
     public class Player
     {
         private List<Dice> _rolledDices = new List<Dice>();
-        private int[] _myNumbers => _rolledDices.Select(dice => dice.GetValue()).ToArray();
         public List<Dice> RollDice()
         {
             for (int i = 0; i < _numOfDicePerHand; i++)
