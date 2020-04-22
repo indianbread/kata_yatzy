@@ -1,5 +1,6 @@
 using Xunit;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Yatzy;
 
@@ -9,28 +10,38 @@ namespace Yatzy.Test
     {
         public CategoryScoreShould()
         {
-            Player = new Player();
-            CategoryScore = new CategoryScore(Player.RollDice());
+            CategoryScore = new CategoryScore(_dices);
         }
-
-        public Player Player;
-        public CategoryScore CategoryScore;
         
-        [Fact]
-        public void StoreAListOfScoresForEachCategory()
+        public CategoryScore CategoryScore;
+        private static List<Dice> _dices = new List<Dice>()
         {
-            Player.RollDice();
-            Assert.Equal(15, CategoryScore.GetScoresForEachCategory().Count);
+            {new Dice(1)},
+            {new Dice(2)},
+            {new Dice(1)},
+            {new Dice(4)},
+            {new Dice(6)}
+        };
+        
+        //chance = 14, 1s = 2, 2s = 2, 4s = 4, 6s = 6, pair = 2
+
+        [Fact]
+        public void ContainAListOfNonZeroScoresForEachCategory()
+        {
+            Assert.Equal(6, CategoryScore.GetSortedListOfNonZeroScores().Count());
         }
 
-        [Fact]
-        public void CategoryScoreListContainsCorrectData()
+        [Theory]
+        [InlineData("Chance", 14)]
+        [InlineData("Ones", 2)]
+        [InlineData("Twos", 2)]
+        [InlineData("Fours", 4)]
+        [InlineData("Sixes", 6)]
+        [InlineData("Pair", 2)]
+        public void CategoryScoreListContainsCorrectData(string category, int expectedScore)
         {
-            var sut = CategoryScore.GetScoresForEachCategory();
-            var actualCountOfScoresGreaterThanZero = sut.Count(item => item.Value > 2);
-            
-            Assert.True(actualCountOfScoresGreaterThanZero > 0);
-
+            var sut = CategoryScore.GetSortedListOfNonZeroScores();
+            Assert.Equal(expectedScore, sut[category]);
         }
 
     }

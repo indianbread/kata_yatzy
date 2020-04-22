@@ -20,13 +20,21 @@ namespace Yatzy
             set => _diceNumbers = value;
         }
 
-        private MethodInfo[] GetAllCategories()
+        public Dictionary<string, int> GetSortedListOfNonZeroScores()
         {
-            MethodInfo[] methodInfos = typeof(Category).GetMethods(BindingFlags.Public|BindingFlags.Instance|BindingFlags.DeclaredOnly);
-            return methodInfos;
+            var listOfNonZeroScores = GetCategoriesWithNonZeroScores();
+            return listOfNonZeroScores.OrderByDescending(item => item.Value)
+                                      .ToDictionary(pair => pair.Key, pair => pair.Value);
         }
 
-        public Dictionary<string, int> GetScoresForEachCategory()
+
+        private MethodInfo[] GetAllCategories()
+        {
+            MethodInfo[] categoryMethods = typeof(Category).GetMethods(BindingFlags.Public|BindingFlags.Instance|BindingFlags.DeclaredOnly);
+            return categoryMethods;
+        }
+
+        private Dictionary<string, int> GetScoresForAllCategories()
         {
             MethodInfo[] allMethods = GetAllCategories();
             Type categoryType = typeof(Category);
@@ -47,6 +55,23 @@ namespace Yatzy
             return methodsWithScore;
 
         }
+
+        private Dictionary<string, int> GetCategoriesWithNonZeroScores()
+        {
+            var categoryScores = GetScoresForAllCategories();
+            var categoriesWithNonZeroScores = categoryScores.Where(item => item.Value == 0)
+                .Select(item => item.Key);
+            foreach (var category in categoriesWithNonZeroScores)
+            {
+                categoryScores.Remove(category);
+            }
+
+            return categoryScores;
+
+        }
+        
+        
+        
 
             
     }
