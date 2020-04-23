@@ -86,22 +86,14 @@ namespace Yatzy
      
         public int Pair()
         {
-            int totalScore = 0;
             var possiblePairs = GetNumbersWithMultipleOccurence(2);
             return possiblePairs.Any() ?  possiblePairs.Max() * 2 : 0;
         }
 
         public int TwoPair()
         {
-            int totalScore = 0;
             var possiblePairs = GetNumbersWithMultipleOccurence(2);
-            if (possiblePairs.Count() == 2)
-            {
-                totalScore = possiblePairs.Aggregate((result, value) => result + value) * 2;
-            }
-
-            return totalScore;
-
+            return (possiblePairs.Count() == 2) ? (possiblePairs.Aggregate((result, value) => result + value) * 2) : 0;
         }
         
         public int ThreeOfAKind()
@@ -133,18 +125,9 @@ namespace Yatzy
 
         public int FullHouse()
         {
-            int totalScore = 0;
             var threeOfAKind = _diceNumbersWithCount.FirstOrDefault(diceCount => diceCount.Value == 3);
-            if (threeOfAKind.Key > 0)
-            {
-                var pair = _diceNumbersWithCount.FirstOrDefault(diceCount => diceCount.Value == 2);
-                if (pair.Key > 0)
-                {
-                    totalScore = (threeOfAKind.Key * 3) + (pair.Key * 2);
-                }
-            }
-
-            return totalScore;
+            var pair = _diceNumbersWithCount.FirstOrDefault(diceCount => diceCount.Value == 2);
+            return (threeOfAKind.Key > 0) && (pair.Key > 0) ? (threeOfAKind.Key * 3) + (pair.Key * 2) : 0;
         }
         
         private SortedList<int, int> GetDiceNumbersWithCount()
