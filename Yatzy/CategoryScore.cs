@@ -45,13 +45,7 @@ namespace Yatzy
             }
             object category = categoryConstructor.Invoke(new object[] {DiceNumbers});
             Dictionary<string, int> methodsWithScore = new Dictionary<string, int>();
-            foreach (var method in allMethods)
-            {
-
-                methodsWithScore.Add(method.Name, (int) method.Invoke(category, null));
-
-            }
-            
+            allMethods.ToList().ForEach(method => methodsWithScore.Add(method.Name, (int) method.Invoke(category, null)));
             return methodsWithScore;
 
         }
@@ -59,20 +53,9 @@ namespace Yatzy
         private Dictionary<string, int> GetCategoriesWithNonZeroScores()
         {
             var categoryScores = GetScoresForAllCategories();
-            var categoriesWithNonZeroScores = categoryScores.Where(item => item.Value == 0)
-                .Select(item => item.Key);
-            foreach (var category in categoriesWithNonZeroScores)
-            {
-                categoryScores.Remove(category);
-            }
-
-            return categoryScores;
-
+            return categoryScores.Where(item => item.Value > 0)
+                                 .ToDictionary(pair => pair.Key, pair => pair.Value);
         }
-        
-        
-        
 
-            
     }
 }
