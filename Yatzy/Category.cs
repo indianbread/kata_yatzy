@@ -1,18 +1,31 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
+using System.Reflection.Metadata;
 
 namespace Yatzy
 {
     public class Category
     {
-        private List<int> _diceNumbers;
+        private int[] _diceNumbers;
 
-        public Category(List<int> diceNumbers)
+        private SortedList<int, int> _diceNumbersWithCount = new SortedList<int, int>();
+
+        public Category(int[] diceNumbers) 
         {
             _diceNumbers = diceNumbers;
+            _diceNumbersWithCount = GetDiceNumbersWithCount();
         }
+        
+        //can also take list of dice as param
+        // public Category(List<Dice> dice)
+        // {
+        //     _diceNumbers = dice.Select(die => die.GetValue()).ToList();
+        // }
+        
         public int Chance()
         {
             int sum = _diceNumbers.Aggregate((result, number) => result + number);
@@ -23,7 +36,7 @@ namespace Yatzy
         {
             bool isYatzy = true;
         
-            for (int i = 0; i < (_diceNumbers.Count - 1); i++)
+            for (int i = 0; i < (_diceNumbers.Length - 1); i++)
             {
                 if (_diceNumbers[i] == _diceNumbers[i + 1]) continue;
                 isYatzy = false;
@@ -33,46 +46,61 @@ namespace Yatzy
             int total = isYatzy ? 50 : 0;
             return total;
         }
+        
+        private int GetNumbersPoints(int categoryNumber)
+        {
+            bool isNumberPresent = _diceNumbers.Any(number => number == categoryNumber);
+
+            return isNumberPresent ? _diceNumbersWithCount[categoryNumber] * categoryNumber : 0;
+        }
 
         public int Ones()
         {
-            return Numbers(1);
+            return GetNumbersPoints(1);
         }
 
         public int Twos()
         {
-            return Numbers(2);
+            return GetNumbersPoints(2);
         }
 
         public int Threes()
         {
-            return Numbers(3);
+            return GetNumbersPoints(3);
         }
 
         public int Fours()
         {
-            return Numbers(4);
+            return GetNumbersPoints(4);
         }
 
         public int Fives()
         {
-            return Numbers(5);
+            return GetNumbersPoints(5);
         }
 
         public int Sixes()
         {
-            return Numbers(6);
+            return GetNumbersPoints(6);
         }
-        
+     
         public int Pair()
         {
-            return GetPairPoints(1);
-
+            int totalScore = 0;
+            var possiblePairs = GetNumbersWithMultipleOccurence(2);
+            return possiblePairs.Any() ?  possiblePairs.Max() * 2 : 0;
         }
 
         public int TwoPair()
         {
-            return GetPairPoints(2);
+            int totalScore = 0;
+            var possiblePairs = GetNumbersWithMultipleOccurence(2);
+            if (possiblePairs.Count() == 2)
+            {
+                totalScore = possiblePairs.Aggregate((result, value) => result + value) * 2;
+            }
+
+            return totalScore;
 
         }
         
@@ -106,76 +134,54 @@ namespace Yatzy
         public int FullHouse()
         {
             int totalScore = 0;
-            int threeOfAKindPoints = ThreeOfAKind();
-            if (threeOfAKindPoints == 0)
+            var threeOfAKind = _diceNumbersWithCount.FirstOrDefault(diceCount => diceCount.Value == 3);
+            if (threeOfAKind.Key > 0)
             {
-                return totalScore;
+                var pair = _diceNumbersWithCount.FirstOrDefault(diceCount => diceCount.Value == 2);
+                if (pair.Key > 0)
+                {
+                    totalScore = (threeOfAKind.Key * 3) + (pair.Key * 2);
+                }
             }
 
-            int threeOfAKindNumber = GetNumbersWithMultipleOccurence(3).First();
-            _diceNumbers.RemoveAll(number => number == threeOfAKindNumber);
-            int pairPoints = Pair();
-            if (pairPoints == 0)
-            {
-                return totalScore;
-            }
-
-            totalScore = threeOfAKindPoints + pairPoints;
             return totalScore;
-
-        }
-
-        private int Numbers(int categoryNumber)
-        {
-            var countOfDice = _diceNumbers.FindAll(diceNumber => diceNumber == categoryNumber).Count;
-            return countOfDice * categoryNumber;
         }
         
-        private int GetPairPoints(int numberOfPairs)
+        private SortedList<int, int> GetDiceNumbersWithCount()
         {
-            var possiblePairs = GetNumbersWithMultipleOccurence(2);
-            var targetPairExists = possiblePairs.Count >= numberOfPairs;
-            int totalPoints = 0;
-            if (targetPairExists)
+            var numbers = _diceNumbers.GroupBy(number => number);
+            foreach (var number in numbers)
             {
-                totalPoints = numberOfPairs == 1 ? possiblePairs.Max() * 2 : CalculateTwoPairScore(possiblePairs);
-
+                _diceNumbersWithCount.Add(number.Key, number.Count());
             }
-            return totalPoints;
+
+            return _diceNumbersWithCount;
         }
 
-        private List<int> GetNumbersWithMultipleOccurence(int multiple)
+        private IEnumerable<int> GetNumbersWithMultipleOccurence(int multiple)
         {
-            var numbers = _diceNumbers.GroupBy(number => number)
-                .Where(number => number.Count() >= multiple)
-                .Select(numberGroup => numberGroup.Key)
-                .ToList();
-            return numbers;
+            var diceCounts = _diceNumbersWithCount.Where(diceCount => diceCount.Value >= multiple);
+            var diceNumbers = diceCounts.Select(diceCount => diceCount.Key);
+            return diceNumbers;
         }
 
-        private int CalculateTwoPairScore(List<int> numbers)
-        {
-            
-            var total = numbers.Aggregate((result, number) => result + number) * 2;
-            return total;
-        }
-        
         private int GetMultipleOfAKindScore(int multiple)
         {
             var multipleOfAKindNumberList = GetNumbersWithMultipleOccurence(multiple);
-            var multipleOfAKindNumber = 0;
-            if (multipleOfAKindNumberList.Any())
-            {
-                multipleOfAKindNumber = multipleOfAKindNumberList.First();
-            }
+            var multipleOfAKindNumber = multipleOfAKindNumberList.Any() ? multipleOfAKindNumberList.First() : 0;
             int total = multipleOfAKindNumber * multiple;
             return total;
         }
         
         private int GetStraightTotalScore(int startingNumber)
         {
-            int totalScore = startingNumber;
-            for (int i = 1; i < _diceNumbers.Count; i++)
+            int totalScore = 0;
+            if (startingNumber != _diceNumbers.Min())
+            {
+                return totalScore;
+            }
+            totalScore = startingNumber;
+            for (int i = 1; i < _diceNumbers.Length; i++)
             {
                 if (_diceNumbers[i] == (_diceNumbers[i - 1] + 1))
                 {

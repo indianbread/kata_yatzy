@@ -11,7 +11,7 @@ namespace Yatzy.Test
         [InlineData(21, 4, 5, 5, 6, 1)]
         public void ReturnSumOfAllDiceForChance(int expectedTotal, int dice1, int dice2, int dice3, int dice4, int dice5)
         {
-            List<int> diceNumbers = new List<int>() {dice1, dice2, dice3, dice4, dice5};
+            int[] diceNumbers = new int[] {dice1, dice2, dice3, dice4, dice5};
             Category category = new Category(diceNumbers);
             
             Assert.Equal(expectedTotal, category.Chance());
@@ -21,7 +21,7 @@ namespace Yatzy.Test
         [InlineData(50, 1, 1, 1, 1, 1)]
         public void Return50ForYatzy(int expectedTotal, int dice1, int dice2, int dice3, int dice4, int dice5)
         {
-            List<int> diceNumbers = new List<int>() {dice1, dice2, dice3, dice4, dice5};
+            int[] diceNumbers = new int[] {dice1, dice2, dice3, dice4, dice5};
             Category category = new Category(diceNumbers);
             
             Assert.Equal(expectedTotal, category.Yatzy());
@@ -31,7 +31,7 @@ namespace Yatzy.Test
         [InlineData(0, 1, 1, 1, 2, 1)]
         public void Return0IfNotYatzy(int expectedTotal, int dice1, int dice2, int dice3, int dice4, int dice5)
         {
-            List<int> diceNumbers = new List<int>() {dice1, dice2, dice3, dice4, dice5};
+            int[] diceNumbers = new int[] {dice1, dice2, dice3, dice4, dice5};
             Category category = new Category(diceNumbers);
             
             Assert.Equal(expectedTotal, category.Yatzy());
@@ -42,9 +42,11 @@ namespace Yatzy.Test
         public void ReturnSumOfDiceWithValue1ForOnes(int expectedTotal, int dice1, int dice2, int dice3, int dice4,
             int dice5)
         {
-            List<int> diceNumbers = new List<int>() {dice1, dice2, dice3, dice4, dice5};
+            int[] diceNumbers = new int[] {dice1, dice2, dice3, dice4, dice5};
             Category category = new Category(diceNumbers);
             
+            // Assert.Equal(expectedTotal, category.GetNumbersPoints(1
+            // ));
             Assert.Equal(expectedTotal, category.Ones());
         }
         
@@ -53,9 +55,11 @@ namespace Yatzy.Test
         public void Return0IfNoDiceWith1ForOnes(int expectedTotal, int dice1, int dice2, int dice3, int dice4,
             int dice5)
         {
-            List<int> diceNumbers = new List<int>() {dice1, dice2, dice3, dice4, dice5};
+            int[] diceNumbers = new int[] {dice1, dice2, dice3, dice4, dice5};
             Category category = new Category(diceNumbers);
             
+            // Assert.Equal(expectedTotal, category.GetNumbersPoints(1
+            // ));
             Assert.Equal(expectedTotal, category.Ones());
         }
         
@@ -64,9 +68,10 @@ namespace Yatzy.Test
         public void ReturnSumOfDiceWithValue2ForTwos(int expectedTotal, int dice1, int dice2, int dice3, int dice4,
             int dice5)
         {
-            List<int> diceNumbers = new List<int>() {dice1, dice2, dice3, dice4, dice5};
+            int[] diceNumbers = new int[] {dice1, dice2, dice3, dice4, dice5};
             Category category = new Category(diceNumbers);
             
+            // Assert.Equal(expectedTotal, category.GetNumbersPoints(2));
             Assert.Equal(expectedTotal, category.Twos());
         }
         
@@ -75,9 +80,10 @@ namespace Yatzy.Test
         public void ReturnSumOfDiceWithValue4ForFours(int expectedTotal, int dice1, int dice2, int dice3, int dice4,
             int dice5)
         {
-            List<int> diceNumbers = new List<int>() {dice1, dice2, dice3, dice4, dice5};
+            int[] diceNumbers = new int[] {dice1, dice2, dice3, dice4, dice5};
             Category category = new Category(diceNumbers);
             
+            //Assert.Equal(expectedTotal, category.GetNumbersPoints(4));
             Assert.Equal(expectedTotal, category.Fours());
         }
         
@@ -86,9 +92,10 @@ namespace Yatzy.Test
         public void Return0IfNotDiceWithValue6ForSixes(int expectedTotal, int dice1, int dice2, int dice3, int dice4,
             int dice5)
         {
-            List<int> diceNumbers = new List<int>() {dice1, dice2, dice3, dice4, dice5};
+            int[] diceNumbers = new int[] {dice1, dice2, dice3, dice4, dice5};
             Category category = new Category(diceNumbers);
             
+            //Assert.Equal(expectedTotal, category.GetNumbersPoints(6));
             Assert.Equal(expectedTotal, category.Sixes());
         }
 
@@ -100,7 +107,7 @@ namespace Yatzy.Test
         public void ReturnSumOfTwoHighestMatchingDiceForPair(int expectedTotal, int dice1, int dice2, int dice3, int dice4,
             int dice5)
         {
-            List<int> diceNumbers = new List<int>() {dice1, dice2, dice3, dice4, dice5};
+            int[] diceNumbers = new int[] {dice1, dice2, dice3, dice4, dice5};
             Category category = new Category(diceNumbers);
             
             Assert.Equal(expectedTotal, category.Pair());
@@ -112,7 +119,7 @@ namespace Yatzy.Test
         public void Return0IfNoPairForPair(int expectedTotal, int dice1, int dice2, int dice3, int dice4,
             int dice5)
         {
-            List<int> diceNumbers = new List<int>() {dice1, dice2, dice3, dice4, dice5};
+            int[] diceNumbers = new int[] {dice1, dice2, dice3, dice4, dice5};
             Category category = new Category(diceNumbers);
             
             Assert.Equal(expectedTotal, category.Pair());
@@ -125,7 +132,7 @@ namespace Yatzy.Test
         public void ReturnSumOfMatchingDiceForTwoPair(int expectedTotal, int dice1, int dice2, int dice3, int dice4,
             int dice5)
         {
-            List<int> diceNumbers = new List<int>() {dice1, dice2, dice3, dice4, dice5};
+            int[] diceNumbers = new int[] {dice1, dice2, dice3, dice4, dice5};
             Category category = new Category(diceNumbers);
             
             Assert.Equal(expectedTotal, category.TwoPair());
@@ -136,7 +143,7 @@ namespace Yatzy.Test
         public void Return0IfNoTwoPairsOfMatchingDiceForTwoPair(int expectedTotal, int dice1, int dice2, int dice3, int dice4,
             int dice5)
         {
-            List<int> diceNumbers = new List<int>() {dice1, dice2, dice3, dice4, dice5};
+            int[] diceNumbers = new int[] {dice1, dice2, dice3, dice4, dice5};
             Category category = new Category(diceNumbers);
             
             Assert.Equal(expectedTotal, category.TwoPair());
@@ -148,7 +155,7 @@ namespace Yatzy.Test
         public void ReturnSumOfMatchingDiceForThreeOfAKind(int expectedTotal, int dice1, int dice2, int dice3, int dice4,
             int dice5)
         {
-            List<int> diceNumbers = new List<int>() {dice1, dice2, dice3, dice4, dice5};
+            int[] diceNumbers = new int[] {dice1, dice2, dice3, dice4, dice5};
             Category category = new Category(diceNumbers);
             
             Assert.Equal(expectedTotal, category.ThreeOfAKind());
@@ -159,7 +166,7 @@ namespace Yatzy.Test
         public void Return0WhenNoMatchingDiceForThreeOfAKind(int expectedTotal, int dice1, int dice2, int dice3, int dice4,
             int dice5)
         {
-            List<int> diceNumbers = new List<int>() {dice1, dice2, dice3, dice4, dice5};
+            int[] diceNumbers = new int[] {dice1, dice2, dice3, dice4, dice5};
             Category category = new Category(diceNumbers);
             
             Assert.Equal(expectedTotal, category.ThreeOfAKind());
@@ -171,7 +178,7 @@ namespace Yatzy.Test
         public void ReturnSumOfMatchingDiceForFourOfAKind(int expectedTotal, int dice1, int dice2, int dice3, int dice4,
             int dice5)
         {
-            List<int> diceNumbers = new List<int>() {dice1, dice2, dice3, dice4, dice5};
+            int[] diceNumbers = new int[] {dice1, dice2, dice3, dice4, dice5};
             Category category = new Category(diceNumbers);
             
             Assert.Equal(expectedTotal, category.FourOfAKind());
@@ -182,7 +189,7 @@ namespace Yatzy.Test
         public void Return0WhenNoMatchingDiceForFourOfAKind(int expectedTotal, int dice1, int dice2, int dice3, int dice4,
             int dice5)
         {
-            List<int> diceNumbers = new List<int>() {dice1, dice2, dice3, dice4, dice5};
+            int[] diceNumbers = new int[] {dice1, dice2, dice3, dice4, dice5};
             Category category = new Category(diceNumbers);
             
             Assert.Equal(expectedTotal, category.FourOfAKind());
@@ -193,7 +200,7 @@ namespace Yatzy.Test
         public void ReturnSumOfAllDiceForSmallStraight(int expectedTotal, int dice1, int dice2, int dice3, int dice4,
             int dice5)
         {
-            List<int> diceNumbers = new List<int>() {dice1, dice2, dice3, dice4, dice5};
+            int[] diceNumbers = new int[] {dice1, dice2, dice3, dice4, dice5};
             Category category = new Category(diceNumbers);
             
             Assert.Equal(expectedTotal, category.SmallStraight());
@@ -201,10 +208,11 @@ namespace Yatzy.Test
         
         [Theory]
         [InlineData(0, 1, 1, 3, 4, 5)]
+        [InlineData(0, 2, 3, 4, 5, 6)]
         public void Return0IfDiceDoesNotQualifyForSmallStraight(int expectedTotal, int dice1, int dice2, int dice3, int dice4,
             int dice5)
         {
-            List<int> diceNumbers = new List<int>() {dice1, dice2, dice3, dice4, dice5};
+            int[] diceNumbers = new int[] {dice1, dice2, dice3, dice4, dice5};
             Category category = new Category(diceNumbers);
             
             Assert.Equal(expectedTotal, category.SmallStraight());
@@ -215,7 +223,7 @@ namespace Yatzy.Test
         public void ReturnSumOfAllDiceForLargeStraight(int expectedTotal, int dice1, int dice2, int dice3, int dice4,
             int dice5)
         {
-            List<int> diceNumbers = new List<int>() {dice1, dice2, dice3, dice4, dice5};
+            int[] diceNumbers = new int[] {dice1, dice2, dice3, dice4, dice5};
             Category category = new Category(diceNumbers);
             
             Assert.Equal(expectedTotal, category.LargeStraight());
@@ -223,10 +231,11 @@ namespace Yatzy.Test
         
         [Theory]
         [InlineData(0, 2, 3, 3, 4, 5)]
+        [InlineData(0, 1, 2, 3, 4, 5)]
         public void Return0IfDiceDoesNotQualifyForLargeStraight(int expectedTotal, int dice1, int dice2, int dice3, int dice4,
             int dice5)
         {
-            List<int> diceNumbers = new List<int>() {dice1, dice2, dice3, dice4, dice5};
+            int[] diceNumbers = new int[] {dice1, dice2, dice3, dice4, dice5};
             Category category = new Category(diceNumbers);
             
             Assert.Equal(expectedTotal, category.LargeStraight());
@@ -237,7 +246,7 @@ namespace Yatzy.Test
         public void ReturnSumOfAllDiceForFullHouse(int expectedTotal, int dice1, int dice2, int dice3, int dice4,
             int dice5)
         {
-            List<int> diceNumbers = new List<int>() {dice1, dice2, dice3, dice4, dice5};
+            int[] diceNumbers = new int[] {dice1, dice2, dice3, dice4, dice5};
             Category category = new Category(diceNumbers);
             
             Assert.Equal(expectedTotal, category.FullHouse());
@@ -249,11 +258,12 @@ namespace Yatzy.Test
         public void Return0IfNotEligibleForFullHouse(int expectedTotal, int dice1, int dice2, int dice3, int dice4,
             int dice5)
         {
-            List<int> diceNumbers = new List<int>() {dice1, dice2, dice3, dice4, dice5};
+            int[] diceNumbers = new int[] {dice1, dice2, dice3, dice4, dice5};
             Category category = new Category(diceNumbers);
             
             Assert.Equal(expectedTotal, category.FullHouse());
         }
+        
 
     }
 }
